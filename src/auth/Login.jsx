@@ -1,9 +1,62 @@
-import React from 'react'
+import React, { useState } from 'react';
+import { account } from '../config/appwrite';
+import toast from 'react-hot-toast';
 
-const Login = () => {
+const LoginForm = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        setLoading(true);
+
+        try {
+            const session = await account.createEmailSession(email, password);
+            console.log("Logged in:", session);
+            toast.success('Login successful!');
+        } catch (error) {
+            console.error('Login failed:', error.message);
+            toast.error(`Login failed: ${error.message}`);
+        }
+
+        setLoading(false);
+    };
+
     return (
-        <div>Login</div>
-    )
-}
+        <div className="login-container">
+            <h2>Login</h2>
+            <form onSubmit={handleSubmit} className="login-form">
+                <div className="form-field">
+                    <label>Email:</label>
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Enter your email"
+                        required
+                    />
+                </div>
 
-export default Login
+                <div className="form-field">
+                    <label>Password:</label>
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Enter your password"
+                        required
+                    />
+                </div>
+
+                <button type="submit" className="btn" disabled={loading}>
+                    {loading ? 'Logging in...' : 'Login'}
+                </button>
+                <p>Don't have an account? <a href="/register">Register</a></p>
+            </form>
+        </div>
+    );
+};
+
+export default LoginForm;
