@@ -13,7 +13,7 @@ const LoginForm = () => {
         setLoading(true);
 
         try {
-            const session = await account.createEmailSession(email, password);
+            const session = await account.createEmailPasswordSession(email, password);
             console.log("Logged in:", session);
             toast.success('Login successful!');
         } catch (error) {
