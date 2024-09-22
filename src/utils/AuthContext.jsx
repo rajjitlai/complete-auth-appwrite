@@ -49,6 +49,9 @@ export const AuthProvider = ({ children }) => {
                 userInfo.email,
                 userInfo.password1
             )
+
+            // await account.createVerification("http://localhost:3000/home")
+
             let accountDetails = await account.get()
 
             console.log("SESSION ACTIVE with ", accountDetails)

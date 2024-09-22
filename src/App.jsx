@@ -5,9 +5,10 @@ import Profile from './pages/Profile'
 import Login from './pages/Login'
 import Register from './pages/Register'
 
-// utils
 import PrivateRoutes from './utils/PrivateRoutes'
 import { AuthProvider } from './utils/AuthContext'
+import ForgotPassword from './pages/forgot/ForgotPassword'
+import ResetPassword from './pages/reset/ResetPassword'
 
 function App() {
 
@@ -18,7 +19,9 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          {/* Wrap */}
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+
           <Route element={<PrivateRoutes />}>
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
