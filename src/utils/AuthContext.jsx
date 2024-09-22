@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect, createContext } from "react";
 import { account } from "../config/appwriteConfig";
 import { ID } from "appwrite";
+import toast from "react-hot-toast";
 
 const AuthContext = createContext()
 
@@ -45,17 +46,19 @@ export const AuthProvider = ({ children }) => {
                 userInfo.name
             )
 
+            await account.createVerification(`${window.location.origin}/verified`);
+            toast.success("Verification email sent. Please verify to continue.");
+
             await account.createEmailPasswordSession(
                 userInfo.email,
                 userInfo.password1
             )
 
-            // await account.createVerification("http://localhost:3000/home")
-
             let accountDetails = await account.get()
 
             console.log("SESSION ACTIVE with ", accountDetails)
             setUser(accountDetails)
+            toast.error(`Registration failed: ${error.message}`);
         } catch (error) {
             console.error(error)
         }

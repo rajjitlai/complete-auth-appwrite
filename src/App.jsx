@@ -7,8 +7,7 @@ import Register from './pages/Register'
 
 import PrivateRoutes from './utils/PrivateRoutes'
 import { AuthProvider } from './utils/AuthContext'
-import ForgotPassword from './pages/forgot/ForgotPassword'
-import ResetPassword from './pages/reset/ResetPassword'
+import Verified from './components/Verified'
 
 function App() {
 
@@ -19,11 +18,10 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/verified" element={<Verified />} />
 
           <Route element={<PrivateRoutes />}>
-            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
           </Route>
         </Routes>
