@@ -1,8 +1,31 @@
-import React from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Header from './components/Header'
+import Home from './pages/Home'
+import Profile from './pages/Profile'
+import Login from './pages/Login'
+import Register from './pages/Register'
 
-const App = () => {
+// utils
+import PrivateRoutes from './utils/PrivateRoutes'
+import { AuthProvider } from './utils/AuthContext'
+
+function App() {
+
   return (
-    <div>App</div>
+    <Router>
+      <AuthProvider>
+        <Header />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          {/* Wrap */}
+          <Route element={<PrivateRoutes />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/profile" element={<Profile />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
+    </Router>
   )
 }
 
