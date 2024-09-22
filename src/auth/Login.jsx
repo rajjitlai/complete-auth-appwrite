@@ -15,7 +15,15 @@ const LoginForm = () => {
         try {
             const session = await account.createEmailPasswordSession(email, password);
             console.log("Logged in:", session);
-            toast.success('Login successful!');
+
+            const userDetails = await account.get();
+
+            if (userDetails.emailVerification) {
+                toast.success('Login successful!');
+            } else {
+                toast.error('Please verify your email to continue.');
+                await account.deleteSession('current');
+            }
         } catch (error) {
             console.error('Login failed:', error.message);
             toast.error(`Login failed: ${error.message}`);
