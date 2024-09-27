@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { account } from '../config/appwrite';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+
+    const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -20,6 +23,7 @@ const LoginForm = () => {
 
             if (userDetails.emailVerification) {
                 toast.success('Login successful!');
+                navigate("/");
             } else {
                 toast.error('Please verify your email to continue.');
                 await account.deleteSession('current');
