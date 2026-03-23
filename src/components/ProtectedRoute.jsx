@@ -13,7 +13,10 @@ const ProtectedRoute = () => {
         );
     }
 
-    return user ? <Outlet /> : <Navigate to="/login" replace />;
+    if (!user) return <Navigate to="/login" replace />;
+    if (!user.emailVerification) return <Navigate to="/verify-notice" replace />;
+
+    return <Outlet />;
 };
 
 export default ProtectedRoute;

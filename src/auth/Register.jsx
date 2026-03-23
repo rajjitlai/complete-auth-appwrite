@@ -12,7 +12,7 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const { logout } = useAuth();
+    const { checkAuth } = useAuth();
 
     const navigate = useNavigate();
 
@@ -38,9 +38,9 @@ const Register = () => {
 
             toast.success("Registration successful! Check your email for verification.");
             
-            // Log out so they have to verify before logging in (using our context logout)
-            await logout(true);
-            navigate('/login');
+            // Re-fetch user to update context state
+            await checkAuth();
+            navigate('/');
         } catch (error) {
             toast.error("Registration failed: " + error.message);
             console.error(error);

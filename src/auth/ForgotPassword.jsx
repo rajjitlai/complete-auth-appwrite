@@ -1,25 +1,22 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Mail, Lock, Loader2 } from 'lucide-react';
+import { Mail, Loader2, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
-const LoginForm = () => {
+const ForgotPassword = () => {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const { login } = useAuth();
-
+    const { requestPasswordReset } = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-
         try {
-            await login(email, password);
-            navigate("/");
+            await requestPasswordReset(email);
+            // We could redirect to login or show a success message
         } catch (error) {
-            console.error('Login failed:', error.message);
+            console.error(error);
         } finally {
             setLoading(false);
         }
@@ -29,8 +26,8 @@ const LoginForm = () => {
         <div className="auth-page">
             <div className="glass-card">
                 <div className="auth-header">
-                    <h2>Welcome Back</h2>
-                    <p>Please enter your details to sign in</p>
+                    <h2>Forgot Password?</h2>
+                    <p>Enter your email and we'll send you a link to reset your password.</p>
                 </div>
 
                 <form onSubmit={handleSubmit}>
@@ -50,42 +47,24 @@ const LoginForm = () => {
                         </div>
                     </div>
 
-                    <div className="form-group">
-                        <label htmlFor="password">Password</label>
-                        <div className="input-wrapper">
-                            <Lock size={18} />
-                            <input
-                                id="password"
-                                type="password"
-                                className="form-input"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder="••••••••"
-                                required
-                            />
-                        </div>
-                        <div style={{ textAlign: 'right', marginTop: '0.5rem' }}>
-                            <Link to="/forgot-password" style={{ fontSize: '0.75rem', color: 'var(--accent)', textDecoration: 'none', fontWeight: '500' }}>
-                                Forgot password?
-                            </Link>
-                        </div>
-                    </div>
-
                     <button type="submit" className="btn-primary" disabled={loading}>
                         {loading ? (
                             <>
                                 <Loader2 className="spinner" />
-                                <span>Signing in...</span>
+                                <span>Sending link...</span>
                             </>
                         ) : (
-                            'Sign In'
+                            'Send Reset Link'
                         )}
                     </button>
                 </form>
 
                 <div className="auth-footer">
                     <p>
-                        Don't have an account? <Link to="/register">Create one</Link>
+                        <Link to="/login" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <ArrowLeft size={16} />
+                            Back to Sign In
+                        </Link>
                     </p>
                 </div>
             </div>
@@ -93,4 +72,4 @@ const LoginForm = () => {
     );
 };
 
-export default LoginForm;
+export default ForgotPassword;

@@ -27,15 +27,9 @@ export const AuthProvider = ({ children }) => {
     try {
       await account.createEmailPasswordSession(email, password);
       const userData = await account.get();
-      
-      if (!userData.emailVerification) {
-        await logout(true);
-        throw new Error("Please verify your email to continue.");
-      }
-
       setUser(userData);
       toast.success("Login successful!");
-      return true;
+      return userData;
     } catch (error) {
       toast.error(error.message);
       throw error;
@@ -45,17 +39,51 @@ export const AuthProvider = ({ children }) => {
   const logout = async (silent = false) => {
     try {
       await account.deleteSession("current");
+    } catch (error) {
+      console.error("Logout failed:", error.message);
+    } finally {
       setUser(null);
       if (!silent) {
         toast.success("Logged out successfully!");
       }
+    }
+  };
+
+  const resendVerification = async () => {
+    try {
+      await account.createVerification(`${window.location.origin}/verify-email`);
+      toast.success("Verification email sent!");
     } catch (error) {
-      console.error("Logout failed:", error.message);
+      toast.error(error.message);
+      throw error;
+    }
+  };
+
+  const requestPasswordReset = async (email) => {
+    try {
+      await account.createRecovery(email, `${window.location.origin}/reset-password`);
+      toast.success("Password reset email sent!");
+    } catch (error) {
+      toast.error(error.message);
+      throw error;
+    }
+  };
+
+  const resetPassword = async (userId, secret, password) => {
+    try {
+      await account.updateRecovery(userId, secret, password);
+      toast.success("Password reset successfully!");
+    } catch (error) {
+      toast.error(error.message);
+      throw error;
     }
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, checkAuth }}>
+    <AuthContext.Provider value={{ 
+      user, loading, login, logout, checkAuth, 
+      resendVerification, requestPasswordReset, resetPassword 
+    }}>
       {children}
     </AuthContext.Provider>
   );
