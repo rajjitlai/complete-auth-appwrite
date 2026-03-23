@@ -1,26 +1,33 @@
 # Complete Auth Appwrite
 
-A simple React application demonstrating a complete authentication flow using Appwrite, including registration, login, and email verification.
+A modern, production-ready React authentication boilerplate using Appwrite. This project provides a comprehensive user management flow, including registration, secure login, email verification, and password recovery.
 
 ## Features
 
-- **User Registration**: Create a new account with email and password.
-- **Email Verification**: Automatically sends a verification email upon registration.
-- **User Login**: Secure login with email and password (requires email verification).
-- **Protected Routes**: Home page is only accessible to authenticated and verified users.
-- **Logout**: Securely end the user session.
+-   **User Registration**: Create accounts with automatic login and verification email dispatch.
+-   **Email Verification Flow**:
+    -   **Verification Notice**: Unverified users are redirected to a dedicated notice page.
+    -   **Resend Verification**: Users can request a new verification link if needed.
+    -   **Real-time Refresh**: A "check status" feature to update verification state without re-logging.
+-   **Secure Login**: Authenticate users and manage sessions securely.
+-   **Password Recovery**:
+    -   **Forgot Password**: Request a password reset link via email.
+    -   **Reset Password**: Securely update passwords using a recovery token.
+-   **Protected Routes**: Advanced route guarding that handles both authentication and verification status.
+-   **Modern UI/UX**: Glassmorphism design with responsive layouts and real-time toast notifications.
 
 ## Tech Stack
 
-- **Frontend**: React (Vite)
-- **Backend-as-a-Service**: Appwrite
-- **Routing**: React Router DOM
-- **Notifications**: React Hot Toast
+-   **Frontend**: React 18 (Vite)
+-   **Backend-as-a-Service**: Appwrite 14.x
+-   **Routing**: React Router DOM 6.x
+-   **Icons**: Lucide React
+-   **Notifications**: React Hot Toast
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) (v16 or higher recommended)
-- An [Appwrite](https://appwrite.io/) account (Cloud or Self-hosted)
+-   [Node.js](https://nodejs.org/) (v16 or higher)
+-   An [Appwrite](https://appwrite.io/) project (Cloud or Self-hosted)
 
 ## Getting Started
 
@@ -40,16 +47,15 @@ npm install
 ### 3. Configure Appwrite
 
 1. Create a new project in your Appwrite console.
-2. In the Appwrite dashboard, go to **Settings** and find your **Project ID** and **API Endpoint**.
-3. Create a `.env` file in the root directory and add your Appwrite credentials:
+2. Under **Auth** -> **Settings**, enable **Email/Password** authentication.
+3. In your project settings, add a **Web Platform**:
+    -   **Hostname**: `localhost` (for development)
+4. Create a `.env` file in the root directory:
 
    ```env
    VITE_LOGIN_APP_ID=your_appwrite_project_id
    VITE_LOGIN_APP_ENDPOINT=https://cloud.appwrite.io/v1
    ```
-
-4. In the Appwrite console, go to **Auth** -> **Settings** and ensure **Email/Password** authentication is enabled.
-5. Add a Web platform in your Appwrite project settings with the hostname of your development server (e.g., `localhost`).
 
 ### 4. Run the application
 
@@ -57,15 +63,13 @@ npm install
 npm run dev
 ```
 
-The application will be available at `http://localhost:5173`.
-
 ## Folder Structure
 
-- `src/auth`: Login and Registration components.
-- `src/components`: Reusable components like `VerifyEmail`.
-- `src/config`: Appwrite client initialization.
-- `src/func`: Utility functions like logout logic.
-- `src/pages`: Main application pages.
+-   `src/auth`: All authentication-related components (Login, Register, Password Recovery, Verification).
+-   `src/components`: Route guarding components (`ProtectedRoute`, `GuestRoute`).
+-   `src/config`: Appwrite client and account initialization with environment validation.
+-   `src/context`: `AuthContext` managing global user state and authentication methods.
+-   `src/pages`: Main application dashboard.
 
 ## License
 
